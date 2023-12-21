@@ -1,6 +1,6 @@
 name: flutter_ume_kit_get_connect
 description: get_connect kit for flutter_ume.
-version: 1.0.4
+version: 1.0.6
 homepage: https://github.com/JimmyZDD/flutter_ume_kit_get_connect
 
 environment:
@@ -10,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_ume: ^1.0.0
 
   get: ^4.0.0
 
@@ -22,3 +21,6 @@ dev_dependencies:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git
       ref: 59b7580f406bb712e9d9049c8c99212946e34f65
+
+dependency_overrides:
+  flutter_ume: ">=1.0.0 <2.0.0"

@@ -2,22 +2,10 @@
 
 ## 1.0.0
 
-* 正式版
+- 正式版
 
-* Normal version.
+- Normal version.
 
-## 1.0.0-dev.0
+## 1.0.6
 
-* 适配 Flutter 3
-
-* Adapt Flutter 3
-
-## 0.3.0
-
-* 更新版本号
-
-* Update version
-
-## 0.2.0-dev.0
-
-* Initial release.
+- fix: int.parse error

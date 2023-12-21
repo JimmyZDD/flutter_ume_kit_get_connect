@@ -9,4 +9,5 @@ PluginManager.instance // Register plugin kits
   ..register(GetConnectInspector(connect: baseConnect));
 ```
 
+### publish to `pub.dev`
 `flutter packages pub publish --server=https://pub.dartlang.org`
