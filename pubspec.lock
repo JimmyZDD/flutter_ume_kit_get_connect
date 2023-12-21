@@ -178,7 +178,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_ume:
-    dependency: "direct overridden"
+    dependency: "direct main"
     description:
       name: flutter_ume
       sha256: "54a5cb93173426f3727f66b5a52032f8537ec6efd8a3e7a70bfb801e6581f015"

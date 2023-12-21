@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
 
   get: ^4.0.0
+  flutter_ume: ">=1.0.0 <2.0.0"
 
 dev_dependencies:
   flutter_test:
@@ -21,6 +22,3 @@ dev_dependencies:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git
       ref: 59b7580f406bb712e9d9049c8c99212946e34f65
-
-dependency_overrides:
-  flutter_ume: ">=1.0.0 <2.0.0"
