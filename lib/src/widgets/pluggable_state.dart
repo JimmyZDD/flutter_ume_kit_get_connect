@@ -25,7 +25,7 @@ ButtonStyle _buttonStyle(
       borderRadius: BorderRadius.circular(999999),
     ),
     backgroundColor: Theme.of(context).primaryColor,
-    primary: Colors.white,
+    foregroundColor: Colors.white,
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
   );
 }

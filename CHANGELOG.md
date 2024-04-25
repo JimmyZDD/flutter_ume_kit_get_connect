@@ -9,3 +9,7 @@
 ## 1.0.6
 
 - fix: int.parse error
+
+## 1.0.6
+
+- fix: TextButton error
