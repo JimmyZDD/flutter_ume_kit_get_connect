@@ -11,6 +11,7 @@ import 'package:get/get_connect/http/src/request/request.dart';
 import '../constants/extensions.dart';
 import '../instances.dart';
 import '../pluggable.dart';
+import 'expandable_text.dart';
 
 const JsonEncoder _encoder = JsonEncoder.withIndent('  ');
 
@@ -117,7 +118,7 @@ class GetConnectPluggableState extends State<GetConnectInspector> {
     return Material(
       color: Colors.black26,
       child: DefaultTextStyle.merge(
-        style: Theme.of(context).textTheme.bodyText2,
+        style: Theme.of(context).textTheme.bodyMedium,
         child: Align(
           alignment: Alignment.bottomCenter,
           child: Container(
@@ -180,6 +181,7 @@ class _ResponseCard extends StatefulWidget {
 
 class _ResponseCardState extends State<_ResponseCard> {
   final ValueNotifier<bool> _isExpanded = ValueNotifier<bool>(false);
+  var requestDataString = '';
 
   @override
   void dispose() {
@@ -246,12 +248,9 @@ class _ResponseCardState extends State<_ResponseCard> {
     return '$map';
   }
 
-  /// Data for the [_request].
-  String? get _requestDataBuilder {
-    if (_request.decoder is Map) {
-      return _encoder.convert(_request.decoder);
-    }
-    return _request.decoder?.toString();
+  Future<void> decodeRequestData() async {
+    requestDataString = await _request.bodyBytes.bytesToString();
+    setState(() {});
   }
 
   /// Data for the [_response].
@@ -317,6 +316,7 @@ class _ResponseCardState extends State<_ResponseCard> {
   }
 
   Widget _detailedContent(BuildContext context) {
+    decodeRequestData();
     return ValueListenableBuilder<bool>(
       valueListenable: _isExpanded,
       builder: (_, bool value, __) {
@@ -334,7 +334,7 @@ class _ResponseCardState extends State<_ResponseCard> {
               ),
               _TagText(
                 tag: 'Request data',
-                content: _requestDataBuilder,
+                content: requestDataString,
               ),
               _TagText(
                 tag: 'Response body',
@@ -367,7 +367,6 @@ class _ResponseCardState extends State<_ResponseCard> {
             _TagText(
               tag: 'Uri',
               content: '$_requestUrl',
-              shouldStartFromNewLine: false,
             ),
             _detailedContent(context),
           ],
@@ -382,34 +381,31 @@ class _TagText extends StatelessWidget {
     Key? key,
     required this.tag,
     this.content,
-    this.shouldStartFromNewLine = true,
   }) : super(key: key);
 
   final String tag;
   final String? content;
-  final bool shouldStartFromNewLine;
-
-  TextSpan get span {
-    return TextSpan(
-      children: <TextSpan>[
-        TextSpan(
-          text: '$tag: ',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        if (shouldStartFromNewLine) TextSpan(text: '\n'),
-        TextSpan(text: content!),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (content == null) {
+    if (content == null || content!.isEmpty) {
       return const SizedBox.shrink();
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
-      child: SelectableText.rich(span),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '$tag: ',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          ExpandableText(
+            text: content!,
+            maxLines: 10,
+          ),
+        ],
+      ),
     );
   }
 }
