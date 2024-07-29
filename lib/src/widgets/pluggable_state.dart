@@ -141,7 +141,7 @@ class GetConnectPluggableState extends State<GetConnectInspector> {
                       const Spacer(),
                       Text(
                         'GetConnect Requests',
-                        style: Theme.of(context).textTheme.subtitle1,
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Expanded(
                         child: Align(
