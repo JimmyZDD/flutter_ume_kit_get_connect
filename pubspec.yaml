@@ -1,6 +1,6 @@
 name: flutter_ume_kit_get_connect
 description: get_connect kit for flutter_ume.
-version: 1.1.1
+version: 1.2.0
 homepage: https://github.com/JimmyZDD/flutter_ume_kit_get_connect
 
 environment:
@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   get: ^4.0.0
   flutter_ume: ">=1.0.0 <2.0.0"
+  share_plus: ^10.0.0
 
 dev_dependencies:
   flutter_test:

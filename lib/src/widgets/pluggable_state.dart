@@ -7,6 +7,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../constants/extensions.dart';
 import '../instances.dart';
@@ -44,6 +45,7 @@ class GetConnectPluggableState extends State<GetConnectInspector> {
     InspectorInstance.httpContainer
       ..removeListener(_listener) // First, remove refresh listener.
       ..resetPaging(); // Then reset the paging field.
+
     super.dispose();
   }
 
@@ -69,9 +71,9 @@ class GetConnectPluggableState extends State<GetConnectInspector> {
           vertical: 3,
         ),
       ),
-      child: Row(
+      child: const Row(
         mainAxisSize: MainAxisSize.min,
-        children: const <Widget>[
+        children: <Widget>[
           Text('Clear'),
           Icon(Icons.cleaning_services, size: 14),
         ],
@@ -140,7 +142,7 @@ class GetConnectPluggableState extends State<GetConnectInspector> {
                     children: <Widget>[
                       const Spacer(),
                       Text(
-                        'GetConnect Requests',
+                        'GetConnect',
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Expanded(
@@ -182,6 +184,7 @@ class _ResponseCard extends StatefulWidget {
 class _ResponseCardState extends State<_ResponseCard> {
   final ValueNotifier<bool> _isExpanded = ValueNotifier<bool>(false);
   var requestDataString = '';
+  var copyText = '';
 
   @override
   void dispose() {
@@ -273,13 +276,40 @@ class _ResponseCardState extends State<_ResponseCard> {
   }
 
   Widget _detailButton(BuildContext context) {
-    return TextButton(
-      onPressed: _switchExpand,
-      style: _buttonStyle(context),
-      child: const Text(
-        'Detail🔍',
-        style: TextStyle(fontSize: 12, height: 1.2),
-      ),
+    return Row(
+      children: [
+        TextButton(
+          // iconSize: 16,
+          // padding: const EdgeInsets.all(3),
+          onPressed: () {
+            var content = 'Uri: $_requestUrl';
+            content +=
+                '\nstartTime: ${_startTime.hms()}, method: $_method, duration: ${_duration.inMilliseconds > 1000 ? _duration.inSeconds : _duration.inMilliseconds}ms';
+            content += '\nRequest headers: $_requestHeadersBuilder';
+            if (requestDataString.isNotEmpty) {
+              content += '\nRequest data: $requestDataString';
+            }
+            if (_responseDataBuilder != null &&
+                _responseDataBuilder!.isNotEmpty) {
+              content += '\nResponse body: $_responseDataBuilder';
+            }
+            Share.share(content);
+          },
+          child: Icon(
+            Icons.share,
+            size: 20,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+        TextButton(
+          onPressed: _switchExpand,
+          style: _buttonStyle(context),
+          child: const Text(
+            'Detail🔍',
+            style: TextStyle(fontSize: 12, height: 1.2),
+          ),
+        ),
+      ],
     );
   }
 
@@ -308,7 +338,8 @@ class _ResponseCardState extends State<_ResponseCard> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 6),
-        Text('${_duration.inMilliseconds}ms'),
+        Text(
+            '${_duration.inMilliseconds > 1000 ? _duration.inSeconds : _duration.inMilliseconds}ms'),
         const Spacer(),
         _detailButton(context),
       ],
